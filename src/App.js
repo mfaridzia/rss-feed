@@ -1,7 +1,10 @@
 import React from 'react';
-import './App.css';
-
-const ENDPOINT = 'https://api.rss2json.com/v1/api.json?rss_url=';
+import {Container} from './components/Container';
+import {Content, RightContent, LeftContent} from './components/Content'
+import RssLists from './components/RssLists';
+import Sidebar from './components/Sidebar';
+import SearchForm from './components/SearchForm';
+const ENDPOINT = process.env.REACT_APP_RSS_ENDPOINT;
 
 const App = () => {
   const [url, setURL] = React.useState("");
@@ -15,10 +18,10 @@ const App = () => {
     setError(false);
     try {
       const response = await fetch(`${ENDPOINT}${url}`);
-      const { items } = await response.json();
-      console.log(items)
+      const data = await response.json();
+      console.log(data)
       setTimeout(() => {
-        setState(items);
+        setState(data);
         setLoading(false);
       }, 2000);
     } catch (error) {
@@ -27,29 +30,27 @@ const App = () => {
     }
   }
 
-  return (
-    <div className="App">
-      <h2> RSS Feed </h2>
-      <input 
-        type="text" 
-        value={url}
-        onChange={e => setURL(e.target.value)}
-      />
-      <button type="submit" onClick={handleRSSFeed}> Submit </button>
+  if (error) return "Error Parsing Feed, Please try again.";
 
-      <section className="lists-rss-feed">
-        { loading ? "Loading..." : 
-          <ul>
-            { state.length === 0 ? "No data to display!" :
-              state.map((item, i) => {
-                return <li key={i}> { item.title } </li>
-              })
-            }
-          </ul>
-        }
-        { error && "Error Parsing Feed, Please try again." }
-      </section>
-    </div>
+  return (
+    <Container>
+      <SearchForm 
+        url={url}
+        handleURL={e => setURL(e.target.value)}
+        handleRSSFeed={handleRSSFeed}
+      />
+      <Content>
+        <RightContent>
+          <Sidebar data={state} />
+        </RightContent>
+        <LeftContent>
+          <RssLists
+            loading={loading}
+            data={state} 
+          />
+        </LeftContent>
+      </Content>
+    </Container>
   );
 }
 
