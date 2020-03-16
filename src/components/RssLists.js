@@ -2,19 +2,17 @@ import React from 'react';
 import { isArrayEmpty, isObjEmpty } from '../utils/isEmpty';
 import {Menu} from './Container';
 
-const RssLists = ({loading, data}) => {
+const RssLists = ({data}) => {
   return (
     <>
-      { loading ? "Loading..." :
-        <Menu>
-          { isObjEmpty(data) ? null :
-            isArrayEmpty(data.items) ? "Error Parsing Feed, Please try again." : 
-              data.items.map((item, i) => {
-                return <li key={i}> { item.title } </li>
-              })
-          }
-        </Menu>
-      }
+      <Menu>
+        { isObjEmpty(data) ? null :
+          isArrayEmpty(data.items) ? "Error Parsing Feed, Please try again." : 
+            data.items.map((item, i) => {
+              return <li key={i}> <a href={item.link}> { item.title } </a> </li>
+            })
+        }
+      </Menu>
     </>
   )
 } 

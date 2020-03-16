@@ -4,6 +4,7 @@ import {Content, RightContent, LeftContent} from './components/Content'
 import RssLists from './components/RssLists';
 import Sidebar from './components/Sidebar';
 import SearchForm from './components/SearchForm';
+import Loading from './components/Loading';
 const ENDPOINT = process.env.REACT_APP_RSS_ENDPOINT;
 
 const App = () => {
@@ -30,7 +31,7 @@ const App = () => {
     }
   }
 
-  if (error) return "Error Parsing Feed, Please try again.";
+  if (error) return "oops something went wrong.";
 
   return (
     <Container>
@@ -39,18 +40,18 @@ const App = () => {
         handleURL={e => setURL(e.target.value)}
         handleRSSFeed={handleRSSFeed}
       />
-      <Content>
-        <RightContent>
-          <Sidebar data={state} />
-        </RightContent>
-        <LeftContent>
-          <RssLists
-            loading={loading}
-            data={state} 
-          />
-        </LeftContent>
-      </Content>
-    </Container>
+      { 
+        loading ? <Loading /> :
+        <Content>
+          <RightContent>
+            <Sidebar data={state} />
+          </RightContent>
+          <LeftContent>
+            <RssLists data={state} />
+          </LeftContent>
+        </Content>
+      } 
+      </Container>
   );
 }
 

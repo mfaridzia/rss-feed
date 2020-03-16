@@ -14,4 +14,7 @@ export const Menu = styled.ul`
   li {
     padding: 10px 0px;
   }
+  a {
+    color: #000;
+  }
 `

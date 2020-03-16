@@ -8,13 +8,13 @@ export const Content = styled.section`
 `
 
 export const RightContent = styled.section`
-  background: orange;
+  background: #fff;
   width: 30%;
   height: 200px;
 `
 
 export const LeftContent = styled.section`
-  background: yellow;
+  background: #fff;
   width: 70%;
   height: 200px;
 `
